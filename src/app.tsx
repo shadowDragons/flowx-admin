@@ -2,12 +2,13 @@ import { Footer, Question, SelectLang, AvatarDropdown, AvatarName } from '@/comp
 import { LinkOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
-import type { RunTimeLayoutConfig } from '@umijs/max';
+import type { RequestConfig, RunTimeLayoutConfig } from '@umijs/max';
 import { history, Link } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
-import { currentUser as queryCurrentUser } from '@/services/ant-design-pro/api';
 import React from 'react';
+import { getCurrentUser } from './services/flowx-api/user';
+import { getToken } from './services/flowx-api/auth';
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
@@ -16,16 +17,15 @@ const loginPath = '/user/login';
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
-  currentUser?: API.CurrentUser;
+  currentUser?: APIV2.CurrentUser;
   loading?: boolean;
-  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  fetchUserInfo?: () => Promise<APIV2.CurrentUser | undefined>;
 }> {
   const fetchUserInfo = async () => {
     try {
-      const msg = await queryCurrentUser({
+      return await getCurrentUser({
         skipErrorHandler: true,
       });
-      return msg.data;
     } catch (error) {
       history.push(loginPath);
     }
@@ -131,6 +131,31 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
  * 它基于 axios 和 ahooks 的 useRequest 提供了一套统一的网络请求和错误处理方案。
  * @doc https://umijs.org/docs/max/request#配置
  */
+const authHeaderInterceptor = (url: string, options: RequestConfig) => {
+  const authHeader = { Authorization: 'Bearer '+ getToken() };
+  return {
+    url: `${url}`,
+    options: { ...options, interceptors: true, headers: authHeader },
+  };
+};
+// 与后端约定的响应数据格式
+interface ResponseStructure {
+  success: boolean;
+  data: any;
+  errorCode?: number;
+  errorMessage?: string;
+}
+const responseInterceptors = (response: ResponseStructure) => {
+  // 拦截响应数据，进行个性化处理
+  const { data } = response;
+
+  if (response?.success === false) {
+    throw new Error(data?.errorMessage)
+  }
+  return data;
+};
 export const request = {
+  requestInterceptors: [authHeaderInterceptor],
+  responseInterceptors: [responseInterceptors],
   ...errorConfig,
 };

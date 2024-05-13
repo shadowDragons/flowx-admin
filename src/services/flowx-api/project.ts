@@ -38,11 +38,14 @@ export async function projectFindAll(options?: { [key: string]: any }) {
     });
   }
 
-  export async function projectTagFindAll(options?: { [key: string]: any }) {
-    return request<any>('/api/project-tag/list', {
+  export async function projectTagFindAll(params ?: APIV2.ProjectTagFindAllParams, options?: { [key: string]: any }) {
+    const res = await request<any>('/api/project-tag/list', {
       method: 'GET',
+      params: params,
       ...(options || {}),
     });
+    console.log(res)
+    return res;
   }
 
   export async function projectTagFindOne(

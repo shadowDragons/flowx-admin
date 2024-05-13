@@ -64,4 +64,8 @@ export default {
   'pages.searchTable.tenThousand': '万',
   'pages.searchTable.batchDeletion': '批量删除',
   'pages.searchTable.batchApproval': '批量审批',
+  'pages.projectTagTable.title': '项目标签',
+  'pages.projectTagTable.name': '名称',
+  'pages.projectTagTable.new': '新建',
+  'pages.projectTagTable.createForm.newTag': '新建标签',
 };

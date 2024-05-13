@@ -24,3 +24,12 @@ export async function userFindAll(options?: { [key: string]: any }) {
     });
   }
   
+
+export async function getCurrentUser(options?: { [key: string]: any }) {
+  return request<{
+    data: APIV2.CurrentUser;
+  }>('/api/user/current-user', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}

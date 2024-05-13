@@ -1,4 +1,9 @@
 declare namespace APIV2 {
+  type PageParams = {
+    current?: number;
+    pageSize?: number;
+  };
+  
   type CreateProjectDto = {
     /** 项目标题 */
     title: string;
@@ -48,9 +53,17 @@ declare namespace APIV2 {
   };
 
   type LoginResult = {
-    status?: string;
-    type?: string;
-    currentAuthority?: string;
+    access_token: string;
+  };
+
+  type CurrentUser = {
+    name?: string;
+    roles?: string[]
+  };
+
+  
+  interface ProjectTagFindAllParams extends PageParams {
+    name: string
   };
 
   type ProjectTagFindOneParams = {
@@ -61,6 +74,11 @@ declare namespace APIV2 {
   type ProjectTagRemoveParams = {
     /** id */
     id: number;
+  };
+
+  type ProjcetTagListItem = {
+    id?: number;
+    name?: boolean;
   };
 
   type RoleFindOneParams = {

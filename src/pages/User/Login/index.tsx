@@ -1,5 +1,5 @@
 import { Footer } from '@/components';
-import { login } from '@/services/flowx-api/auth';
+import { login, setToken } from '@/services/flowx-api/auth';
 
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 import {
@@ -117,29 +117,23 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (values: APIV2.LoginDto) => {
     try {
-      // 登录
-      const msg = await login({ ...values, type });
-      if (msg.status === 'ok') {
-        const defaultLoginSuccessMessage = intl.formatMessage({
-          id: 'pages.login.success',
-          defaultMessage: '登录成功！',
-        });
-        message.success(defaultLoginSuccessMessage);
-        await fetchUserInfo();
-        const urlParams = new URL(window.location.href).searchParams;
-        history.push(urlParams.get('redirect') || '/');
-        return;
-      }
-      console.log(msg);
-      // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
+      //登录
+      const res = await login({ ...values, type });
+      message.success(intl.formatMessage({
+        id: 'pages.login.success',
+        defaultMessage: '登录成功！',
+      }));
+      setToken(res.access_token);
+      setUserLoginState({status: "success"});
+      await fetchUserInfo();
+      const urlParams = new URL(window.location.href).searchParams;
+      history.push(urlParams.get('redirect') || '/');
     } catch (error) {
-      const defaultLoginFailureMessage = intl.formatMessage({
+      console.log(error);
+      message.error(intl.formatMessage({
         id: 'pages.login.failure',
         defaultMessage: '登录失败，请重试！',
-      });
-      console.log(error);
-      message.error(defaultLoginFailureMessage);
+      }));
     }
   };
   const { status, type: loginType } = userLoginState;
