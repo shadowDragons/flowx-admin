@@ -68,4 +68,12 @@ export default {
   'pages.projectTagTable.name': '名称',
   'pages.projectTagTable.new': '新建',
   'pages.projectTagTable.createForm.newTag': '新建标签',
+  'pages.table.option': '操作',
+  'pages.table.update': '编辑',
+  'pages.table.delete': '删除',
+  'pages.table.chosen': '已选择',
+  'pages.table.item': '项',
+  'pages.table.op.success': '操作成功',
+  'pages.table.op.fail': '操作失败',
+  'pages.table.op.ing': '操作中',
 };

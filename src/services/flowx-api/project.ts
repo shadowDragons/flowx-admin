@@ -44,7 +44,6 @@ export async function projectFindAll(options?: { [key: string]: any }) {
       params: params,
       ...(options || {}),
     });
-    console.log(res)
     return res;
   }
 
@@ -68,6 +67,20 @@ export async function projectFindAll(options?: { [key: string]: any }) {
     options?: { [key: string]: any },
   ) {
     return request<any>('/api/project-tag/update', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
+    });
+  }
+
+  export async function projectTagDelete(
+    body: APIV2.ProjectTagFindAllParams,
+    options?: { [key: string]: any },
+  ) {
+    return request<any>('/api/project-tag/delete', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

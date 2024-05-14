@@ -63,7 +63,8 @@ declare namespace APIV2 {
 
   
   interface ProjectTagFindAllParams extends PageParams {
-    name: string
+    name?: string;
+    ids: number[];
   };
 
   type ProjectTagFindOneParams = {
@@ -77,8 +78,8 @@ declare namespace APIV2 {
   };
 
   type ProjcetTagListItem = {
-    id?: number;
-    name?: boolean;
+    id: number;
+    name: string;
   };
 
   type RoleFindOneParams = {
