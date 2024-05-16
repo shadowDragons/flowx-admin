@@ -29,3 +29,11 @@ export function getToken(): string {
 
   return '';
 }
+
+export async function getOSS(options?: { [key: string]: any }) {
+  return request<any>('/api/auth/oss', {
+      method: 'GET',
+      ...(options || {}),
+  });
+}
+

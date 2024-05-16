@@ -66,8 +66,11 @@ export default {
   'pages.searchTable.batchApproval': '批量审批',
   'pages.projectTagTable.title': '项目标签',
   'pages.projectTagTable.name': '名称',
-  'pages.projectTagTable.new': '新建',
-  'pages.projectTagTable.createForm.newTag': '新建标签',
+  'pages.skillTable.title': '技能',
+  'pages.skillTable.name': '名称',
+  'pages.roleTable.title': '角色',
+  'pages.roleTable.name': '名称',
+  'pages.table.new': '新建',
   'pages.table.option': '操作',
   'pages.table.update': '编辑',
   'pages.table.delete': '删除',
@@ -76,4 +79,5 @@ export default {
   'pages.table.op.success': '操作成功',
   'pages.table.op.fail': '操作失败',
   'pages.table.op.ing': '操作中',
+  'pages.table.batchDeletion': '批量删除'
 };

@@ -17,20 +17,13 @@ declare namespace APIV2 {
     skills: string[];
   };
 
-  type CreateProjectTagDto = {
-    /** 名称 */
-    name: string;
-  };
+
 
   type CreateRoleDto = {
     /** 名称 */
     name: string;
   };
 
-  type CreateSkillDto = {
-    /** 名称 */
-    name: string;
-  };
 
   type CreateUserDto = {
     /** 姓名 */
@@ -53,7 +46,9 @@ declare namespace APIV2 {
   };
 
   type LoginResult = {
-    access_token: string;
+    status: string,
+    type: string,
+    access_token?: string;
   };
 
   type CurrentUser = {
@@ -61,15 +56,28 @@ declare namespace APIV2 {
     roles?: string[]
   };
 
-  
+
+
+  type RoleFindOneParams = {
+    /** id */
+    id: number;
+  };
+
+  type RoleRemoveParams = {
+    /** id */
+    id: number;
+  };
+
+  type UpdateRoleDto = {
+    /** 名称 */
+    name: string;
+    /** id */
+    id: number;
+  };
+
   interface ProjectTagFindAllParams extends PageParams {
     name?: string;
     ids: number[];
-  };
-
-  type ProjectTagFindOneParams = {
-    /** id */
-    id: number;
   };
 
   type ProjectTagRemoveParams = {
@@ -82,24 +90,9 @@ declare namespace APIV2 {
     name: string;
   };
 
-  type RoleFindOneParams = {
-    /** id */
-    id: number;
-  };
-
-  type RoleRemoveParams = {
-    /** id */
-    id: number;
-  };
-
-  type SkillFindOneParams = {
-    /** id */
-    id: number;
-  };
-
-  type SkillRemoveParams = {
-    /** id */
-    id: number;
+  type CreateProjectTagDto = {
+    /** 名称 */
+    name: string;
   };
 
   type UpdateProjectTagDto = {
@@ -109,11 +102,24 @@ declare namespace APIV2 {
     id: number;
   };
 
-  type UpdateRoleDto = {
-    /** 名称 */
-    name: string;
+  interface SkillFindAllParams extends PageParams {
+    name?: string;
+    ids: number[];
+  };
+
+  type SkillRemoveParams = {
     /** id */
     id: number;
+  };
+
+  type SkillListItem = {
+    id: number;
+    name: string;
+  };
+
+  type CreateSkillDto = {
+    /** 名称 */
+    name: string;
   };
 
   type UpdateSkillDto = {
@@ -122,4 +128,32 @@ declare namespace APIV2 {
     /** id */
     id: number;
   };
+
+  interface RoleFindAllParams extends PageParams {
+    name?: string;
+    ids: number[];
+  };
+
+  type RoleRemoveParams = {
+    /** id */
+    id: number;
+  };
+
+  type RoleListItem = {
+    id: number;
+    name: string;
+  };
+
+  type CreateRoleDto = {
+    /** 名称 */
+    name: string;
+  };
+
+  type UpdateRoleDto = {
+    /** 名称 */
+    name: string;
+    /** id */
+    id: number;
+  };
+
 }

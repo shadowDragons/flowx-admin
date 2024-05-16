@@ -46,16 +46,28 @@ export default [
     ],
   },
   {
-    name: 'list.table-list',
-    icon: 'table',
-    path: '/list',
-    component: './TableList',
-  },
-  {
     name: 'project.tag',
     icon: 'table',
     path: '/projectTag',
     component: './ProjectTag',
+  },
+  {
+    name: 'skill',
+    icon: 'table',
+    path: '/skill',
+    component: './Skill',
+  },
+  {
+    name: 'role',
+    icon: 'table',
+    path: '/role',
+    component: './Role',
+  },
+  {
+    name: 'project',
+    icon: 'table',
+    path: '/project',
+    component: './Project',
   },
   {
     path: '/',

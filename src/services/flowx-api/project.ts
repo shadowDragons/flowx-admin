@@ -47,21 +47,6 @@ export async function projectFindAll(options?: { [key: string]: any }) {
     return res;
   }
 
-  export async function projectTagFindOne(
-    // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-    params: APIV2.ProjectTagFindOneParams,
-    options?: { [key: string]: any },
-  ) {
-    return request<any>('/api/project-tag/detail', {
-      method: 'GET',
-      params: {
-        ...params,
-      },
-      ...(options || {}),
-    });
-  }
-  
-
   export async function projectTagUpdate(
     body: APIV2.UpdateProjectTagDto,
     options?: { [key: string]: any },

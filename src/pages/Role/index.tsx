@@ -1,4 +1,3 @@
-import { projectTagCreate, projectTagDelete, projectTagFindAll, projectTagUpdate } from '@/services/flowx-api/project';
 import { PlusOutlined } from '@ant-design/icons';
 import {
   PageContainer,
@@ -14,8 +13,9 @@ import { FormattedMessage, useIntl } from '@umijs/max';
 import { Button, message } from 'antd';
 import { useRef, useState } from 'react';
 import UpdateForm from './components/UpdateForm';
+import { roleCreate, roleDelete, roleFindAll, roleUpdate } from '@/services/flowx-api/role';
 
-const ProjectTag: React.FC = () => {
+const Role: React.FC = () => {
 
 /**
  * @en-US Pop-up window of new window
@@ -27,8 +27,8 @@ const [createModalOpen, handleModalOpen] = useState<boolean>(false);
  * @zh-CN 分布更新窗口的弹窗
  * */
 const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
-const [currentRow, setCurrentRow] = useState<APIV2.ProjcetTagListItem>();
-const [selectedRows, setSelectedRows] = useState<APIV2.ProjcetTagListItem[]>([]);
+const [currentRow, setCurrentRow] = useState<APIV2.RoleListItem>();
+const [selectedRows, setSelectedRows] = useState<APIV2.RoleListItem[]>([]);
 const actionRef = useRef<ActionType>();
 
 /**
@@ -42,13 +42,13 @@ const intl = useIntl();
  * @zh-CN 添加节点
  * @param fields
  */
-const handleAdd = async (fields: APIV2.ProjcetTagListItem) => {
+const handleAdd = async (fields: APIV2.RoleListItem) => {
   const hide = message.loading(intl.formatMessage({
     id: 'pages.table.op.ing',
     defaultMessage: 'pages.table.op.ing',
   }));
   try {
-      await projectTagCreate({
+      await roleCreate({
         name: fields.name
       });
       hide();
@@ -73,13 +73,13 @@ const handleAdd = async (fields: APIV2.ProjcetTagListItem) => {
 *
 * @param fields
 */
-const handleUpdate = async (fields: APIV2.ProjcetTagListItem) => {
+const handleUpdate = async (fields: APIV2.RoleListItem) => {
   const hide = message.loading(intl.formatMessage({
     id: 'pages.table.op.ing',
     defaultMessage: 'pages.table.op.ing',
   }));
   try {
-      await projectTagUpdate({
+      await roleUpdate({
           id: fields.id,
           name: fields.name
       });
@@ -113,7 +113,7 @@ const handleRemove = async (ids: number[]) => {
   }));
   if (!ids) return true;
   try {
-      await projectTagDelete({
+      await roleDelete({
           ids: ids,
       });
       hide();
@@ -135,9 +135,9 @@ const handleRemove = async (ids: number[]) => {
 
   
 
-  const columns: ProColumns<APIV2.ProjcetTagListItem>[] = [
+  const columns: ProColumns<APIV2.RoleListItem>[] = [
     {
-      title: <FormattedMessage id="pages.projectTagTable.title" defaultMessage="Description" />,
+      title: <FormattedMessage id="pages.roleTable.title" defaultMessage="Description" />,
       dataIndex: 'name',
       key: 'name'
     },
@@ -175,11 +175,11 @@ const handleRemove = async (ids: number[]) => {
 
   return (
     <PageContainer>
-      <ProTable<APIV2.ProjcetTagListItem, APIV2.ProjectTagFindAllParams>
+      <ProTable<APIV2.RoleListItem, APIV2.RoleFindAllParams>
         actionRef={actionRef}
         headerTitle={intl.formatMessage({
-          id: 'pages.projectTagTable.title',
-          defaultMessage: 'pages.projectTagTable.title',
+          id: 'pages.roleTable.title',
+          defaultMessage: 'pages.roleTable.title',
         })}
         search={{
           labelWidth: 120,
@@ -197,7 +197,7 @@ const handleRemove = async (ids: number[]) => {
         ]}
         rowKey="id"
         request={async (params) => {
-          return await projectTagFindAll(params);
+          return await roleFindAll(params);
         }}
         columns={columns}
         rowSelection={{
@@ -230,7 +230,7 @@ const handleRemove = async (ids: number[]) => {
           </Button>
         </FooterToolbar>
       )}
-      <ModalForm<APIV2.ProjcetTagListItem>
+      <ModalForm<APIV2.RoleListItem>
         title={intl.formatMessage({
             id: 'pages.table.new',
             defaultMessage: 'pages.table.new',
@@ -249,14 +249,14 @@ const handleRemove = async (ids: number[]) => {
         }}
     >
         <ProFormGroup title={intl.formatMessage({
-            id: 'pages.projectTagTable.name',
-            defaultMessage: 'pages.projectTagTable.name',
+            id: 'pages.roleTable.name',
+            defaultMessage: 'pages.roleTable.name',
         })}>
             <ProFormText width="md" name="name" />
         </ProFormGroup>
     </ModalForm>
     <UpdateForm
-        onSubmit={async (value : APIV2.ProjcetTagListItem) => {
+        onSubmit={async (value : APIV2.RoleListItem) => {
           const success = await handleUpdate(value);
           if (success) {
             handleUpdateModalOpen(false);
@@ -276,4 +276,4 @@ const handleRemove = async (ids: number[]) => {
   );
 };
 
-export default ProjectTag;
+export default Role;
