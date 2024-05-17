@@ -12,8 +12,6 @@ interface OSSDataType {
   policy: string;
   signature: string;
   'x-oss-security-token': string;
-  region: string;
-  bucket: string;
 }
 
 interface AliyunOSSUploadProps {
