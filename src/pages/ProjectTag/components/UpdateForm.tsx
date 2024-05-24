@@ -26,6 +26,8 @@ const UpdateForm = (props: any) => {
   const { updateModalOpen, children, onCancel, values } = props;
   const [form] = Form.useForm<{ name: string; company: string }>();
 
+  form.setFieldsValue(values)
+
   /**
    * @en-US International configuration
    * @zh-CN 国际化配置
@@ -46,7 +48,6 @@ const UpdateForm = (props: any) => {
             defaultMessage: 'pages.table.update',
         })}
           form={form}
-          initialValues={values}
           visible={updateModalOpen}
           autoFocusFirstInput
           trigger={<>{children}</>}

@@ -1,31 +1,30 @@
+import { projectTagSelect } from '@/services/flowx-api/project';
+import { skillSelect } from '@/services/flowx-api/skill';
 import {
   ProFormText,
   ModalForm,
   ProFormGroup,
+  ProFormSelect
 } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max';
 // import { useIntl } from 'umi';
 import { Form } from 'antd';
 
 // import { uploadMedia, getMedia } from '@/services/api/file';
-export type FormValueType = {
-  name?: string
-} & Partial<APIV2.ProjcetTagListItem>;
 
 export type UpdateFormProps = {
-  onCancel: (flag?: boolean, formVals?: FormValueType) => void;
-  onSubmit: (values: FormValueType) => Promise<void>;
-  updateModalVisible: boolean;
-  values: any;
+  onCancel: (flag?: boolean, formVals?: APIV2.UpdateProjectDto) => void;
+  onSubmit: (values: APIV2.UpdateProjectDto) => Promise<void>;
+  updateModalOpen: boolean;
+  values: APIV2.UpdateProjectDto | undefined;
 };
 
 
 
-const UpdateForm = (props: any) => {
+const UpdateForm = (props: UpdateFormProps) => {
   //   const intl = useIntl();
-  const { updateModalOpen, children, onCancel, values } = props;
-  const [form] = Form.useForm<{ name: string; company: string }>();
-
+  const { updateModalOpen, onCancel, values } = props;
+  const [form] = Form.useForm<APIV2.UpdateProjectDto>();
   /**
    * @en-US International configuration
    * @zh-CN 国际化配置
@@ -37,10 +36,7 @@ const UpdateForm = (props: any) => {
       return null;
   }
   return (
-      <ModalForm<{
-          name: string;
-          company: string;
-      }>
+      <ModalForm<APIV2.UpdateProjectDto>
           title={intl.formatMessage({
             id: 'pages.table.update',
             defaultMessage: 'pages.table.update',
@@ -49,7 +45,6 @@ const UpdateForm = (props: any) => {
           initialValues={values}
           visible={updateModalOpen}
           autoFocusFirstInput
-          trigger={<>{children}</>}
           modalProps={{
               destroyOnClose: true,
               onCancel: () => {
@@ -63,9 +58,39 @@ const UpdateForm = (props: any) => {
             id: 'pages.projectTagTable.name',
             defaultMessage: 'pages.projectTagTable.name',
         })}>
-              <ProFormText width="md" name="name" />
+              <ProFormText width="md" name="title" />
               <ProFormText hidden width="md" name="id" />
           </ProFormGroup>
+          <ProFormGroup title={intl.formatMessage({
+            id: 'pages.projectTable.description',
+            defaultMessage: 'pages.projectTable.description',
+        })}>
+              <ProFormText width="md" name="description" />
+          </ProFormGroup>
+          <ProFormSelect
+          name="tags"
+          mode="multiple"
+          allowClear
+          label={intl.formatMessage({
+            id: 'pages.projectTable.tags',
+            defaultMessage: 'pages.projectTable.tags',
+        })}
+          request={async () => await projectTagSelect()}
+          placeholder="请选择标签"
+          rules={[{ required: true, message: '请选择标签' }]}
+        />
+        <ProFormSelect
+          name="skills"
+          mode="multiple"
+          allowClear
+          label={intl.formatMessage({
+            id: 'pages.projectTable.skills',
+            defaultMessage: 'pages.projectTable.skills',
+        })}
+          request={async () => await skillSelect()}
+          placeholder="请选择技能"
+          rules={[{ required: true, message: '请选择技能' }]}
+        />
       </ModalForm>
   );
 };

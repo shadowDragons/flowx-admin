@@ -151,8 +151,8 @@ const handleRemove = async (ids: number[]) => {
           <a
               key="config"
               onClick={() => {
-                  handleUpdateModalOpen(true);
                   setCurrentRow(record);
+                  handleUpdateModalOpen(true);
               }}
           >
               <FormattedMessage
@@ -230,6 +230,7 @@ const handleRemove = async (ids: number[]) => {
           </Button>
         </FooterToolbar>
       )}
+      
       <ModalForm<APIV2.ProjcetTagListItem>
         title={intl.formatMessage({
             id: 'pages.table.new',
@@ -238,6 +239,7 @@ const handleRemove = async (ids: number[]) => {
         width="400px"
         open={createModalOpen}
         onOpenChange={handleModalOpen}
+        destroyOnClose={true}
         onFinish={async (value) => {
             const success = await handleAdd(value);
             if (success) {

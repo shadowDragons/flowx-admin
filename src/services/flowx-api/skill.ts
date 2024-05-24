@@ -26,6 +26,13 @@ import { request } from '@umijs/max';
   }
   
 
+  export async function skillSelect() {
+    const res = await request<any>('/api/skill/select', {
+      method: 'GET'
+    });
+    return res;
+  }
+
   export async function skillUpdate(
     body: APIV2.UpdateSkillDto,
     options?: { [key: string]: any },

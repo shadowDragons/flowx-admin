@@ -3,6 +3,11 @@ declare namespace APIV2 {
     current?: number;
     pageSize?: number;
   };
+
+  type SelectItemDto = {
+    label: string;
+    value: number;
+  };
   
   type CreateProjectDto = {
     /** 项目标题 */
@@ -10,13 +15,53 @@ declare namespace APIV2 {
     /** 项目描述 */
     description: string;
     /** 标签 */
-    tags: string[];
+    tags: number[];
     /** 图片 */
     imgs: string[];
     /** 技能 */
-    skills: string[];
+    skills: number[];
   };
 
+  type UpdateProjectDto = {
+    /** 项目标题 */
+    title: string;
+    /** 项目描述 */
+    description: string;
+    /** 标签 */
+    tags: number[];
+    /** 图片 */
+    imgs: ProjectImgListItem[];
+    /** 技能 */
+    skills: number[];
+    /** id */
+    id: number;
+  };
+
+  type ProjcetListItem = {
+    /** 项目标题 */
+    title: string;
+    /** 项目描述 */
+    description: string;
+    /** 标签 */
+    tags: ProjcetTagListItem[];
+    /** 图片 */
+    imgs: ProjectImgListItem[];
+    /** 技能 */
+    skills: SkillListItem[];
+    /** id */
+    id: number;
+  };
+
+  interface ProjectFindAllParams extends PageParams {
+    name?: string;
+    ids: number[];
+  };
+
+  
+  type ProjectImgListItem = {
+    id: number;
+    name: string;
+  };
 
 
   type CreateRoleDto = {
