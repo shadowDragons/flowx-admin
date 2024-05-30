@@ -1,3 +1,5 @@
+import { UploadFile } from "antd";
+
 declare namespace APIV2 {
   type PageParams = {
     current?: number;
@@ -17,7 +19,7 @@ declare namespace APIV2 {
     /** 标签 */
     tags: number[];
     /** 图片 */
-    imgs: string[];
+    imgs: number[];
     /** 技能 */
     skills: number[];
   };
@@ -30,7 +32,8 @@ declare namespace APIV2 {
     /** 标签 */
     tags: number[];
     /** 图片 */
-    imgs: ProjectImgListItem[];
+    imgs: number[];
+    fileList: UploadFile[];
     /** 技能 */
     skills: number[];
     /** id */
@@ -60,7 +63,7 @@ declare namespace APIV2 {
   
   type ProjectImgListItem = {
     id: number;
-    name: string;
+    path: string;
   };
 
 

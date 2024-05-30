@@ -12,138 +12,139 @@ import {
   FooterToolbar
 } from '@ant-design/pro-components';
 import { FormattedMessage, useIntl } from '@umijs/max';
-import { Button, Tag, message } from 'antd';
+import { Button, Form, Tag, message } from 'antd';
 import { useRef, useState } from 'react';
 import UpdateForm from './components/UpdateForm';
 import { skillSelect } from '@/services/flowx-api/skill';
+import ProjectUpload from '@/components/Upload/ProjectUpload';
+import { response } from 'express';
+import { APIV2 } from '@/services/flowx-api/typings';
 
 const Project: React.FC = () => {
 
-/**
- * @en-US Pop-up window of new window
- * @zh-CN 新建窗口的弹窗
- *  */
-const [createModalOpen, handleModalOpen] = useState<boolean>(false);
-/**
- * @en-US The pop-up window of the distribution update window
- * @zh-CN 分布更新窗口的弹窗
- * */
-const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
-const [currentRow, setCurrentRow] = useState<APIV2.UpdateProjectDto>();
-const [selectedRows, setSelectedRows] = useState<APIV2.ProjcetListItem[]>([]);
-const actionRef = useRef<ActionType>();
-
-/**
-   * @en-US International configuration
-   * @zh-CN 国际化配置
+  const [createForm] = Form.useForm<APIV2.CreateProjectDto>();
+  /**
+   * @en-US Pop-up window of new window
+   * @zh-CN 新建窗口的弹窗
+   *  */
+  const [createModalOpen, handleModalOpen] = useState<boolean>(false);
+  /**
+   * @en-US The pop-up window of the distribution update window
+   * @zh-CN 分布更新窗口的弹窗
    * */
-const intl = useIntl();
+  const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
+  const [currentRow, setCurrentRow] = useState<APIV2.UpdateProjectDto>();
+  const [selectedRows, setSelectedRows] = useState<APIV2.ProjcetListItem[]>([]);
+  const actionRef = useRef<ActionType>();
 
-/**
- * @en-US Add node
- * @zh-CN 添加节点
- * @param fields
- */
-const handleAdd = async (fields: APIV2.CreateProjectDto) => {
-  const hide = message.loading(intl.formatMessage({
-    id: 'pages.table.op.ing',
-    defaultMessage: 'pages.table.op.ing',
-  }));
-  try {
-      await projectCreate({
-        title: fields.title,
-        description: fields.description,
-        tags: fields.tags,
-        skills: fields.skills,
-        imgs: fields.imgs
-      });
-      hide();
-      message.success(intl.formatMessage({
-        id: 'pages.table.op.success',
-        defaultMessage: 'pages.table.op.success',
-      }));
-      return true;
-  } catch (error) {
-      hide();
-      message.error(intl.formatMessage({
-        id: 'pages.table.op.fail',
-        defaultMessage: 'pages.table.op.fail',
-      }));
-      return false;
-  }
-};
+  /**
+     * @en-US International configuration
+     * @zh-CN 国际化配置
+     * */
+  const intl = useIntl();
 
-/**
-* @en-US Update node
-* @zh-CN 更新节点
-*
-* @param fields
-*/
-const handleUpdate = async (fields: APIV2.UpdateProjectDto) => {
-  const hide = message.loading(intl.formatMessage({
-    id: 'pages.table.op.ing',
-    defaultMessage: 'pages.table.op.ing',
-  }));
-  try {
-      await projectUpdate({
-          id: fields.id,
+  /**
+   * @en-US Add node
+   * @zh-CN 添加节点
+   * @param fields
+   */
+  const handleAdd = async (fields: APIV2.CreateProjectDto) => {
+    const hide = message.loading(intl.formatMessage({
+      id: 'pages.table.op.ing',
+      defaultMessage: 'pages.table.op.ing',
+    }));
+    try {
+        await projectCreate({
           title: fields.title,
           description: fields.description,
           tags: fields.tags,
           skills: fields.skills,
           imgs: fields.imgs
-      });
-      hide();
+        });
+        hide();
+        message.success(intl.formatMessage({
+          id: 'pages.table.op.success',
+          defaultMessage: 'pages.table.op.success',
+        }));
+        return true;
+    } catch (error) {
+        hide();
+        message.error(intl.formatMessage({
+          id: 'pages.table.op.fail',
+          defaultMessage: 'pages.table.op.fail',
+        }));
+        return false;
+    }
+  };
 
-      message.success(intl.formatMessage({
-        id: 'pages.table.op.success',
-        defaultMessage: 'pages.table.op.success',
-      }));
-      return true;
-  } catch (error) {
-      hide();
-      message.error(intl.formatMessage({
-        id: 'pages.table.op.fail',
-        defaultMessage: 'pages.table.op.fail',
-      }));
-      return false;
-  }
-};
+  /**
+  * @en-US Update node
+  * @zh-CN 更新节点
+  *
+  * @param fields
+  */
+  const handleUpdate = async (fields: APIV2.UpdateProjectDto) => {
+    const hide = message.loading(intl.formatMessage({
+      id: 'pages.table.op.ing',
+      defaultMessage: 'pages.table.op.ing',
+    }));
+    try {
+        await projectUpdate({
+            id: fields.id,
+            title: fields.title,
+            description: fields.description,
+            tags: fields.tags,
+            skills: fields.skills,
+            imgs: fields.imgs
+        });
+        hide();
 
-/**
-*  Delete node
-* @zh-CN 删除节点
-*
-* @param selectedRows
-*/
-const handleRemove = async (ids: number[]) => {
-  const hide = message.loading(intl.formatMessage({
-    id: 'pages.table.op.ing',
-    defaultMessage: 'pages.table.op.ing',
-  }));
-  if (!ids) return true;
-  try {
-      await projectDelete({
-          ids: ids,
-      });
-      hide();
-      message.success(intl.formatMessage({
-        id: 'pages.table.op.success',
-        defaultMessage: 'pages.table.op.success',
-      }));
-      return true;
-  } catch (error) {
-      hide();
-      message.error(intl.formatMessage({
-        id: 'pages.table.op.fail',
-        defaultMessage: 'pages.table.op.fail',
-      }));
-      return false;
-  }
-};
-  
+        message.success(intl.formatMessage({
+          id: 'pages.table.op.success',
+          defaultMessage: 'pages.table.op.success',
+        }));
+        return true;
+    } catch (error) {
+        hide();
+        message.error(intl.formatMessage({
+          id: 'pages.table.op.fail',
+          defaultMessage: 'pages.table.op.fail',
+        }));
+        return false;
+    }
+  };
 
-  
+  /**
+  *  Delete node
+  * @zh-CN 删除节点
+  *
+  * @param selectedRows
+  */
+  const handleRemove = async (ids: number[]) => {
+    const hide = message.loading(intl.formatMessage({
+      id: 'pages.table.op.ing',
+      defaultMessage: 'pages.table.op.ing',
+    }));
+    if (!ids) return true;
+    try {
+        await projectDelete({
+            ids: ids,
+        });
+        hide();
+        message.success(intl.formatMessage({
+          id: 'pages.table.op.success',
+          defaultMessage: 'pages.table.op.success',
+        }));
+        return true;
+    } catch (error) {
+        hide();
+        message.error(intl.formatMessage({
+          id: 'pages.table.op.fail',
+          defaultMessage: 'pages.table.op.fail',
+        }));
+        return false;
+    }
+  };
 
   const columns: ProColumns<APIV2.ProjcetListItem>[] = [
     {
@@ -204,6 +205,16 @@ const handleRemove = async (ids: number[]) => {
             skills: record.skills.map((skill) => {
               return skill.id;
             }),
+            fileList: record.imgs.map((img) => {
+              return {
+                url: img.path,
+                response: {
+                  data: {
+                    id: img.id
+                  }
+                }
+              }
+            })
           }
         }
         return [
@@ -290,6 +301,7 @@ const handleRemove = async (ids: number[]) => {
         </FooterToolbar>
       )}
       <ModalForm<APIV2.CreateProjectDto>
+        form={createForm}
         title={intl.formatMessage({
             id: 'pages.table.new',
             defaultMessage: 'pages.table.new',
@@ -298,6 +310,7 @@ const handleRemove = async (ids: number[]) => {
         open={createModalOpen}
         onOpenChange={handleModalOpen}
         onFinish={async (value) => {
+            value.imgs = createForm.getFieldValue('imgs');
             const success = await handleAdd(value);
             if (success) {
                 handleModalOpen(false);
@@ -343,9 +356,19 @@ const handleRemove = async (ids: number[]) => {
           placeholder="请选择技能"
           rules={[{ required: true, message: '请选择技能' }]}
         />
+        <ProjectUpload 
+          uploadAction="http://localhost:3100/api/file/upload-project-img"
+          onUploadSuccess={(value) => {
+            createForm.setFieldsValue({
+              imgs: value
+            });
+          }}
+          initValues={[]}
+         />
     </ModalForm>
     <UpdateForm
         onSubmit={async (value : APIV2.UpdateProjectDto) => {
+          console.log(value)
           const success = await handleUpdate(value);
           if (success) {
             handleUpdateModalOpen(false);

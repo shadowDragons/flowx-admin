@@ -1,5 +1,7 @@
+import ProjectUpload from '@/components/Upload/ProjectUpload';
 import { projectTagSelect } from '@/services/flowx-api/project';
 import { skillSelect } from '@/services/flowx-api/skill';
+import { APIV2 } from '@/services/flowx-api/typings';
 import {
   ProFormText,
   ModalForm,
@@ -23,7 +25,7 @@ export type UpdateFormProps = {
 
 const UpdateForm = (props: UpdateFormProps) => {
   //   const intl = useIntl();
-  const { updateModalOpen, onCancel, values } = props;
+  const { updateModalOpen, onCancel, values, onSubmit } = props;
   const [form] = Form.useForm<APIV2.UpdateProjectDto>();
   /**
    * @en-US International configuration
@@ -51,8 +53,16 @@ const UpdateForm = (props: UpdateFormProps) => {
                   onCancel();
               },
           }}
+
           submitTimeout={2000}
-          onFinish={props.onSubmit}
+          onFinish={async (value)=> {
+              const imgs = props.values?.imgs ? props.values.imgs.map((item)=> {
+                return item.id;
+              }) : [];
+              value.imgs = imgs;
+              onSubmit(value);
+            }
+          }
       >
           <ProFormGroup title={intl.formatMessage({
             id: 'pages.projectTagTable.name',
@@ -91,6 +101,15 @@ const UpdateForm = (props: UpdateFormProps) => {
           placeholder="请选择技能"
           rules={[{ required: true, message: '请选择技能' }]}
         />
+        <ProjectUpload 
+          uploadAction="http://localhost:3100/api/file/upload-project-img"
+          onUploadSuccess={(value) => {
+            form.setFieldsValue({
+              imgs: value
+            });
+          }}
+          initValues={values?.fileList}
+         />
       </ModalForm>
   );
 };
